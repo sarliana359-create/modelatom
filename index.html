@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LMS Digitalisasi Pembelajaran Kimia – SMAN 48 Maluku Tengah</title>
+<style>
+:root{--bg1:#e3f0ff;--bg2:#ece6ff;--bg3:#ffe6f1;--card:#fff;--tx:#1c2540;--mut:#5b6785;--bd:#d9e2f3;--pri:#1565c0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--bg1:#101a33;--bg2:#1a1636;--bg3:#2a1426;--card:#1b2340;--tx:#e8edf9;--mut:#9aa7c7;--bd:#2d3860}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--tx);background:linear-gradient(160deg,var(--bg1),var(--bg2) 55%,var(--bg3));min-height:100vh}
+header{background:linear-gradient(120deg,#0d47a1,#1e88e5);color:#fff;padding:18px 16px;border-radius:0 0 28px 28px;text-align:center}
+header h1{margin:6px 0 2px;font-size:clamp(20px,5vw,32px);letter-spacing:.5px}
+header p{margin:2px 0;font-size:14px;opacity:.95}.slogan{font-style:italic}
+.logo{font-size:38px}
+main{max-width:980px;margin:0 auto;padding:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.tile{border:0;border-radius:20px;overflow:hidden;cursor:pointer;color:#fff;font:inherit;padding:0;text-align:left;box-shadow:0 6px 18px rgba(20,40,90,.18)}
+.tile .ic{font-size:64px;text-align:center;padding:22px 0;filter:drop-shadow(0 6px 4px rgba(0,0,0,.25))}
+.tile .lb{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;font-weight:700;font-size:18px;background:rgba(0,0,0,.22)}
+.blue{background:#4aa0f5}.green{background:#3fc084}.orange{background:#ffb02e}.purple{background:#9b86f0}.blue2{background:#4f9bef}
+.box{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 3px 10px rgba(20,40,90,.07)}
+.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+button,.btn{font:inherit;cursor:pointer;border:0;border-radius:12px;padding:10px 14px;background:var(--pri);color:#fff;font-weight:600}
+button.sec{background:var(--bd);color:var(--tx)}
+input,select,textarea{font:inherit;padding:9px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);width:100%;margin:4px 0}
+label{font-size:13px;color:var(--mut);font-weight:600}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+details{border:1px solid var(--bd);border-radius:12px;padding:10px 12px;margin:8px 0;background:var(--card)}summary{cursor:pointer;font-weight:700}
+.res{background:rgba(21,101,192,.09);border-radius:12px;padding:10px;margin-top:8px;line-height:1.7}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.tabs button{background:var(--bd);color:var(--tx)}.tabs button.on{background:var(--pri);color:#fff}
+.tbl{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}td,th{border-bottom:1px solid var(--bd);padding:6px 8px;text-align:left}
+.ok{color:#1b873f;font-weight:700}.no{color:#c62828;font-weight:700}.mut{color:var(--mut);font-size:13px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+</style></head><body>
+<header><div class="logo">🎓</div><h1>DIGITALISASI PEMBELAJARAN KIMIA</h1>
+<p><b>SMA NEGERI 48 MALUKU TENGAH</b></p><p>Guru: Sarliana, S.Pd. · Kimia · Kelas X</p>
+<p class="slogan">Belajar Kimia dengan Mudah, Menarik, dan Menyenangkan</p></header>
+<main id="app"></main>
+<script>
+const $=s=>document.querySelector(s),app=$('#app');
+const sub=f=>String(f).replace(/(\d+)/g,'<sub>$1</sub>');
+const AR={H:1,He:4,Li:7,Be:9,B:11,C:12,N:14,O:16,F:19,Ne:20,Na:23,Mg:24,Al:27,Si:28,P:31,S:32,Cl:35.5,K:39,Ca:40,Mn:55,Fe:56,Cu:63.5,Zn:65,Br:80,Ag:108,I:127,Ba:137,Pb:207};
+const L=6.02e23;
+const CARDS=[{id:'mapel',t:'Matapelajaran Kimia',c:'blue2',ic:'⚛️',m:['materi','bahan','lkpd','video','media','lab','simulasi','soal','ulangan','tugas','absensi','hasil']}];
+function need(){if(ME.role==='guru')return true;if(!ME.name){const n=(prompt('Nama lengkap:')||'').trim();if(!n)return false;ME.name=n;ME.kelas=(prompt('Kelas (mis. X-1):')||'').trim();ME.id=ME.id||n.toLowerCase().replace(/\W+/g,'_')}return true}
+const TUGAS=[
+['Tugas 1 – Mr dan Mol','Hitung Mr senyawa Al₂(SO₄)₃ dan C₆H₁₂O₆ (Ar Al=27, S=32, O=16, C=12, H=1). Lalu hitung jumlah mol dan jumlah partikel pada 34,2 g Al₂(SO₄)₃.'],
+['Tugas 2 – Mol, Massa, Volume','Sebanyak 11 g gas CO₂ (Mr 44) diukur pada keadaan STP. Tentukan mol, jumlah molekul, dan volumenya. Sertakan langkah penyelesaian.'],
+['Tugas 3 – Penyetaraan dan Stoikiometri','Setarakan reaksi Al + HCl → AlCl₃ + H₂. Jika 5,4 g Al (Ar 27) direaksikan dengan HCl berlebih, hitung volume H₂ (STP) yang terbentuk.'],
+['Tugas 4 – HOTS (C5/C6)','Sebanyak 6 g Mg (Ar 24) direaksikan dengan 6 g O₂ (Ar 16) membentuk MgO. Tentukan pereaksi pembatas, massa MgO, dan massa sisa pereaksi. Rancang satu cara untuk mengecek hasilmu memakai Hukum Kekekalan Massa.'],
+['Tugas 5 – Proyek Kontekstual','Pilih satu produk sehari-hari (garam, pupuk, obat maag, dsb.). Cari rumus kimianya, hitung Mr, dan buat infografis singkat tentang jumlah mol dalam satu takaran penggunaan.']];
+const CS=[
+'Apa yang dipelajari stoikiometri? Jawab: hubungan kuantitatif zat dalam reaksi, misalnya menghitung massa produk dari massa reaktan.',
+'Mr Ca(OH)₂ (Ar Ca=40, O=16, H=1) = 40 + 2(16) + 2(1) = 74.',
+'Berapa partikel dalam 0,25 mol atom Fe? 0,25 × 6,02×10²³ = 1,505×10²³ atom.',
+'Berapa molekul dalam 3 mol H₂O? 3 × 6,02×10²³ = 1,806×10²⁴ molekul.',
+'Berapa mol dalam 49 g H₂SO₄ (Mr 98)? n = 49/98 = 0,5 mol.',
+'Volume 0,2 mol N₂ pada STP? V = 0,2 × 22,4 = 4,48 L.',
+'Tulis reaksi: gas nitrogen bereaksi dengan gas hidrogen menjadi amonia. N₂(g) + 3H₂(g) → 2NH₃(g).',
+'Setarakan Fe + O₂ → Fe₂O₃. Hasil: 4Fe + 3O₂ → 2Fe₂O₃.',
+'Berapa gram O₂ untuk membakar 2 mol CH₄ (CH₄ + 2O₂ → CO₂ + 2H₂O)? n O₂ = 4 mol; massa = 4 × 32 = 128 g.',
+'2 mol N₂ dan 3 mol H₂ (N₂ + 3H₂ → 2NH₃). N₂: 2/1 = 2; H₂: 3/3 = 1. H₂ pembatas; NH₃ = 2 mol; sisa N₂ = 1 mol.',
+'12 g C dibakar habis dengan 32 g O₂ menghasilkan CO₂. Massa CO₂ = 12 + 32 = 44 g (massa total tetap).',
+'Air mengandung H : O = 1 : 8. Jika 9 g air diuraikan, H = 1 g dan O = 8 g.',
+'CO: 12 g C bersama 16 g O; CO₂: 12 g C bersama 32 g O. Perbandingan O = 16 : 32 = 1 : 2.',
+'2 L H₂ bereaksi dengan O₂ membentuk uap air. Volume O₂ = 1 L, uap air = 2 L (perbandingan 2 : 1 : 2).',
+'10 L gas O₂ mengandung 5×10²² molekul. Berapa molekul dalam 20 L gas CH₄ pada kondisi sama? Perbandingan volume 2×, maka 1×10²³ molekul.'];
+const RX=[{n:'2H₂ + O₂ → 2H₂O (uap)',g:['H₂','O₂','H₂O'],k:[2,1,2]},{n:'N₂ + 3H₂ → 2NH₃',g:['N₂','H₂','NH₃'],k:[1,3,2]},{n:'C₃H₈ + 5O₂ → 3CO₂ + 4H₂O',g:['C₃H₈','O₂','CO₂','H₂O'],k:[1,5,3,4]}];
+const NAMA={materi:'Materi Pembelajaran',bahan:'Bahan Ajar Digital',lkpd:'LKPD',video:'Video Pembelajaran',media:'Media Pembelajaran Interaktif',lab:'Laboratorium Maya',simulasi:'Simulasi Perhitungan Kimia',soal:'Latihan Soal',ulangan:'Ulangan Harian',tugas:'Tugas Peserta Didik',absensi:'Absensi Kehadiran',hasil:'Hasil Belajar'};
+
+/* ---------- penyimpanan: database bila tersedia, cadangan localStorage ---------- */
+let DB=null,ME={role:null,name:'',kelas:'',id:''},CAN=false;
+const ls={get(k){try{return JSON.parse(localStorage.getItem(k)||'[]')}catch(e){return[]}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const S={
+async list(c){if(DB){try{const q=await DB.collection(c).get();return q.docs.map(d=>({id:d.id,...(typeof d.data==='function'?d.data():d.data)}))}catch(e){}}return ls.get('lms_'+c)},
+async add(c,o){o.ts=Date.now();if(DB){try{const r=await DB.collection(c).add(o);return}catch(e){}}const a=ls.get('lms_'+c);o.id='l'+o.ts;a.push(o);ls.set('lms_'+c,a)},
+async put(c,o){if(DB){try{await DB.collection(c).doc(o.id).set(o);return}catch(e){}}const a=ls.get('lms_'+c).map(x=>x.id===o.id?o:x);ls.set('lms_'+c,a)}};
+(async()=>{try{const u=await claude.use('user');if(u){CAN=await u.canEdit();try{ME.id=await u.id()}catch(e){}}DB=await claude.use('db')}catch(e){}ME.role=CAN?'guru':'siswa';if(CAN)ME.name='Sarliana, S.Pd.';route()})();
+
+/* ---------- rumus kimia ---------- */
+function parse(f){let i=0;const num=()=>{const m=/^\d+/.exec(f.slice(i));if(m){i+=m[0].length;return+m[0]}return 1};
+function grp(){const c={};while(i<f.length){const ch=f[i];if(ch=='('){i++;const g=grp();i++;const n=num();for(const k in g)c[k]=(c[k]||0)+g[k]*n}else if(ch==')')return c;else{const m=/^[A-Z][a-z]?/.exec(f.slice(i));if(!m)throw Error('Rumus tidak valid: '+f);i+=m[0].length;const n=num();c[m[0]]=(c[m[0]]||0)+n}}return c}return grp()}
+function mr(f){const c=parse(f.trim());let t=0,st=[];for(const k in c){if(!AR[k])throw Error('Ar unsur '+k+' belum tersedia');t+=AR[k]*c[k];st.push(c[k]+' × '+AR[k])}return{v:t,st:st.join(' + ')}}
+const f2=x=>(+x.toPrecision(4)).toString().replace('.',',');
+const sci=x=>{const e=Math.floor(Math.log10(x));return f2(x/10**e)+' × 10<sup>'+e+'</sup>'};
+
+/* ---------- konten materi ---------- */
+const MAT=[
+['Pengertian Stoikiometri','Menjelaskan arti stoikiometri.','Stoikiometri adalah cabang kimia yang mempelajari hubungan kuantitatif antara zat-zat dalam reaksi kimia (massa, mol, volume, jumlah partikel).','Industri: menghitung bahan baku pupuk urea agar tidak boros.'],
+['Massa Atom Relatif (Ar) dan Massa Molekul Relatif (Mr)','Menghitung Mr dari Ar.','Mr = jumlah Ar semua atom penyusun senyawa.<br>Contoh: Mr H<sub>2</sub>SO<sub>4</sub> = (2×1) + 32 + (4×16) = 98.','Kesehatan: menghitung kadar zat aktif obat.'],
+['Konsep Mol','Menjelaskan mol sebagai satuan jumlah zat.','1 mol zat mengandung 6,02 × 10<sup>23</sup> partikel (tetapan Avogadro, L).','Seperti “lusin” untuk 12 butir, mol untuk partikel yang sangat kecil.'],
+['Hubungan Mol dengan Jumlah Partikel','Menghitung jumlah partikel dari mol.','Jumlah partikel = n × 6,02 × 10<sup>23</sup><br>Contoh: 0,5 mol air = 3,01 × 10<sup>23</sup> molekul H<sub>2</sub>O.','Lingkungan: menghitung jumlah molekul polutan.'],
+['Hubungan Mol dengan Massa Zat','Mengubah gram ke mol.','n = massa (g) / Mr<br>Contoh: 11,7 g NaCl (Mr 58,5) → n = 11,7/58,5 = 0,2 mol.','Dapur: takaran garam dalam resep.'],
+['Hubungan Mol dengan Volume Gas','Menghitung volume gas.','Keadaan standar (STP): V = n × 22,4 L<br>Contoh: 2 mol O<sub>2</sub> = 44,8 L.','Kesehatan: kebutuhan gas oksigen medis.'],
+['Persamaan Reaksi Kimia','Menulis persamaan reaksi dengan benar.','Reaktan → produk, disertai fasa (s, l, g, aq).<br>Contoh: 2H<sub>2</sub>(g) + O<sub>2</sub>(g) → 2H<sub>2</sub>O(l)','Pembakaran bahan bakar.'],
+['Penyetaraan Persamaan Reaksi','Menyetarakan jumlah atom kiri dan kanan.','Jumlah atom tiap unsur di kiri harus sama dengan di kanan.<br>Contoh: C<sub>3</sub>H<sub>8</sub> + 5O<sub>2</sub> → 3CO<sub>2</sub> + 4H<sub>2</sub>O','Gas elpiji (propana) saat dibakar.'],
+['Perhitungan Stoikiometri Berdasarkan Persamaan Reaksi','Menghitung mol/massa zat lain dari reaksi.','Perbandingan koefisien = perbandingan mol.<br>2H<sub>2</sub> + O<sub>2</sub> → 2H<sub>2</sub>O: 4 mol H<sub>2</sub> menghasilkan 4 mol H<sub>2</sub>O.','Industri: menentukan hasil produksi.'],
+['Pereaksi Pembatas dan Pereaksi Berlebih','Menentukan pereaksi pembatas.','Bagi mol tiap pereaksi dengan koefisiennya; hasil bagi terkecil = pereaksi pembatas, yang habis lebih dulu.','Membuat kue: telur habis lebih dulu, tepung bersisa.'],
+['Hukum Kekekalan Massa (Lavoisier)','Menjelaskan massa tetap saat reaksi.','Massa zat sebelum dan sesudah reaksi sama.','Lingkungan: pembakaran tidak “menghilangkan” massa, berubah jadi gas.'],
+['Hukum Perbandingan Tetap (Proust)','Menerapkan perbandingan massa unsur.','Perbandingan massa unsur dalam suatu senyawa selalu tetap. H : O dalam air = 1 : 8.','Kesehatan: komposisi senyawa obat selalu konsisten.'],
+['Hukum Perbandingan Berganda (Dalton)','Membandingkan dua senyawa dari unsur sama.','Jika dua unsur membentuk lebih dari satu senyawa, perbandingan massa unsur kedua (massa unsur pertama tetap) berupa bilangan bulat sederhana. Contoh: CO dan CO<sub>2</sub>.','Gas CO (berbahaya) dan CO<sub>2</sub>.'],
+['Hukum Perbandingan Volume (Gay-Lussac)','Menghitung volume gas bereaksi.','Pada suhu dan tekanan sama, volume gas bereaksi berbanding sebagai bilangan bulat sederhana. 2 vol H<sub>2</sub> + 1 vol O<sub>2</sub> → 2 vol uap air.','Industri amonia (Haber).'],
+['Hukum Avogadro','Menghubungkan volume dan jumlah partikel.','Pada suhu dan tekanan sama, gas bervolume sama mengandung jumlah molekul sama.','Balon berisi gas yang berbeda tapi volume sama.']];
+const SOAL=[
+{t:'pg',q:'Mr H<sub>2</sub>O (Ar H = 1, O = 16) adalah …',o:['16','17','18','20'],a:2,p:'Mr = 2(1) + 16 = 18.'},
+{t:'pg',q:'Jumlah partikel dalam 2 mol zat adalah …',o:['6,02 × 10²³','1,204 × 10²⁴','3,01 × 10²³','1,806 × 10²⁴'],a:1,p:'2 × 6,02 × 10²³ = 1,204 × 10²⁴.'},
+{t:'bs',q:'Pada keadaan STP, 1 mol gas bervolume 22,4 L.',a:true,p:'Benar, volume molar STP = 22,4 L/mol.'},
+{t:'is',q:'Massa 0,5 mol NaCl (Ar Na = 23, Cl = 35,5) dalam gram adalah … (angka saja)',a:29.25,p:'Mr = 58,5; massa = 0,5 × 58,5 = 29,25 g.'},
+{t:'pg',q:'Pada 2H₂ + O₂ → 2H₂O, 4 mol H₂ menghasilkan H₂O sebanyak …',o:['2 mol','4 mol','6 mol','8 mol'],a:1,p:'Perbandingan koefisien H₂ : H₂O = 2 : 2, jadi 4 mol.'},
+{t:'pg',q:'Perbandingan massa unsur dalam suatu senyawa selalu tetap. Pernyataan ini adalah hukum …',o:['Lavoisier','Proust','Dalton','Gay-Lussac'],a:1,p:'Hukum Perbandingan Tetap dikemukakan Proust.'},
+{t:'pg',q:'(C4) 10 g CaCO₃ (Mr 100) dipanaskan menjadi CaO + CO₂. Volume CO₂ (STP) adalah …',o:['1,12 L','2,24 L','4,48 L','22,4 L'],a:1,p:'n = 10/100 = 0,1 mol; V = 0,1 × 22,4 = 2,24 L.'},
+{t:'ur',q:'(C5, HOTS) 4 g H₂ direaksikan dengan 32 g O₂ membentuk H₂O. Tentukan pereaksi pembatasnya dan massa H₂O yang terbentuk. Tuliskan langkahnya.',p:'n H₂ = 2 mol, n O₂ = 1 mol. Dibagi koefisien: H₂ = 1, O₂ = 1, keduanya habis bereaksi tepat. Massa H₂O = 2 × 18 = 36 g.'}];
+
+/* ---------- tampilan ---------- */
+const go=h=>{location.hash=h};
+addEventListener('hashchange',()=>route());
+function route(){const h=(location.hash||'#home').slice(1);if(!ME.role)ME.role=CAN?'guru':'siswa';
+const c=CARDS.find(x=>x.id===h);if(h==='home'||!h)return home();if(c)return hub(c);if(NAMA[h])return page(h);home()}
+function home(){app.innerHTML=`<div class="grid" style="margin-top:12px">${CARDS.map(c=>`<button class="tile ${c.c}" onclick="go('${c.id}')"><div class="ic">${c.ic}</div><div class="lb">${c.t}<span>➜</span></div></button>`).join('')}</div>`}
+function hub(c){app.innerHTML=`<button class="sec" onclick="go('home')">← Dasbor</button><h2>${c.ic} ${c.t}</h2><div class="menu">${c.m.map(m=>`<button onclick="go('${m}')">${NAMA[m]}</button>`).join('')}</div>${c.id==='mapel'?`<div class="box"><b>Identitas Mata Pelajaran</b><p>Mata pelajaran: Kimia · Kelas X · Guru: Sarliana, S.Pd.<br>Tema: Belajar Kimia Menyenangkan, Interaktif, dan Kontekstual.<br>Materi utama: Stoikiometri Kimia dan Hukum Dasar Kimia.</p></div>`:''}`}
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function masuk(){app.innerHTML=`<div class="box"><h2>Masuk</h2><label>Nama lengkap</label><input id="nm" value="${esc(ME.name)}"><label>Kelas</label><input id="kl" placeholder="mis. X-1"><div class="bar" style="margin-top:8px"><button onclick="login('siswa')">Masuk sebagai Siswa</button>${CAN?`<button onclick="login('guru')">Masuk sebagai Guru</button>`:''}</div>
+<p class="mut">${CAN?'Akun Anda dikenali sebagai pemilik halaman (guru).':'Akses guru hanya untuk pemilik/editor halaman ini.'}</p></div>`}
+function login(r){const n=$('#nm').value.trim();if(!n)return alert('Isi nama terlebih dahulu.');ME={role:r,name:n,kelas:$('#kl').value.trim(),id:ME.id||n.toLowerCase().replace(/\W+/g,'_')};go('home');route()}
+const guru=()=>ME.role==='guru';
+function page(k){const back=`<button class="sec" onclick="history.length>1?history.back():go('home')">← Kembali</button> <button class="sec" onclick="go('home')">Dasbor</button><h2>${NAMA[k]}</h2>`;app.innerHTML=back+'<div id="pg"></div>';
+({materi:pMateri,bahan:()=>pRes('bahan'),lkpd:()=>pRes('lkpd'),video:()=>pRes('video'),lab:()=>pSim('kekal'),media:()=>pSim('konv'),simulasi:()=>pSim('mr'),soal:()=>pQuiz(0),ulangan:()=>pQuiz(600),absensi:pAbsen,tugas:pTugas,hasil:pHasil})[k]()}
+function pMateri(){$('#pg').innerHTML=MAT.map((m,i)=>`<details><summary>${i+1}. ${m[0]}</summary><p><b>Tujuan:</b> ${m[1]}</p><p>${m[2]}</p><p><b>Penerapan:</b> ${m[3]}</p><p><b>Contoh soal dan penyelesaian:</b> ${CS[i]||''}</p></details>`).join('')+'<div class="box"><b>Rangkuman:</b> mol menghubungkan massa (n = m/Mr), jumlah partikel (n × 6,02 × 10<sup>23</sup>), dan volume gas STP (n × 22,4 L). Koefisien reaksi = perbandingan mol.</div>'}
+async function pRes(t){const r=(await S.list('res')).filter(x=>x.type===t);$('#pg').innerHTML=`<div class="box">${r.length?r.map(x=>`<p>🔗 <a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a></p>`).join(''):'<p class="mut">Belum ada konten. Guru dapat menambahkannya.</p>'}</div>`+(guru()?`<div class="box"><b>Tambah (guru)</b><input id="rt" placeholder="Judul"><input id="ru" placeholder="Tautan (https://…)"><button onclick="addRes('${t}')">Simpan</button></div>`:'')}
+async function addRes(t){const a=$('#rt').value.trim(),u=$('#ru').value.trim();if(!a||!/^https?:\/\//.test(u))return alert('Isi judul dan tautan yang diawali https://');await S.add('res',{type:t,title:a,url:u});pRes(t)}
+
+function pSim(tab){const T={mr:'Hitung Mr',konv:'Mol · Massa · Partikel',setara:'Setarakan Reaksi',batas:'Pereaksi Pembatas',kekal:'Eksperimen: Kekekalan Massa',gay:'Eksperimen: Volume Gas'};
+$('#pg').innerHTML=`<div class="tabs">${Object.keys(T).map(k=>`<button class="${k===tab?'on':''}" onclick="pSim('${k}')">${T[k]}</button>`).join('')}</div><div class="box">${{
+mr:`<label>Rumus senyawa (mis. Ca(OH)2)</label><input id="a" value="Ca(OH)2"><button onclick="hMr()">Hitung</button><div class="res" id="o"></div>`,
+konv:`<label>Rumus senyawa</label><input id="a" value="NaCl"><div class="row"><div><label>Diketahui</label><select id="j"><option value="g">Massa (g)</option><option value="n">Mol</option><option value="p">Jumlah partikel</option></select></div><div><label>Nilai</label><input id="b" type="number" step="any" value="11.7"></div></div><button onclick="hKonv()">Hitung</button><div class="res" id="o"></div>`,
+setara:`<label>Reaksi (mis. C3H8 + O2 -> CO2 + H2O)</label><input id="a" value="C3H8 + O2 -> CO2 + H2O"><button onclick="hSet()">Setarakan</button><div class="res" id="o"></div>`,
+batas:`<div class="row"><div><label>Rumus A</label><input id="a1" value="H2"></div><div><label>Koefisien A</label><input id="k1" type="number" value="2"></div><div><label>Massa A (g)</label><input id="m1" type="number" step="any" value="4"></div></div><div class="row"><div><label>Rumus B</label><input id="a2" value="O2"></div><div><label>Koefisien B</label><input id="k2" type="number" value="1"></div><div><label>Massa B (g)</label><input id="m2" type="number" step="any" value="32"></div></div><button onclick="hBat()">Hitung</button><div class="res" id="o"></div>`,kekal:`<p><b>Tujuan:</b> membuktikan massa sebelum = sesudah reaksi. <b>Reaksi:</b> 2Mg + O<sub>2</sub> → 2MgO (pita magnesium dibakar).</p><label>Massa pita Mg (g)</label><input id="m1" type="number" step="any" value="4.8"><button onclick="hKek()">Bakar pita Mg 🔥</button><div class="res" id="o"></div>`,gay:`<p><b>Tujuan:</b> membuktikan perbandingan volume gas = perbandingan koefisien (suhu dan tekanan sama).</p><label>Pilih reaksi</label><select id="rx">${RX.map((r,i)=>`<option value="${i}">${r.n}</option>`).join('')}</select><label>Volume gas pertama (L)</label><input id="v" type="number" step="any" value="2"><button onclick="hGay()">Jalankan eksperimen</button><div class="res" id="o"></div>`}[tab]}</div>`}
+const out=h=>$('#o').innerHTML=h,tryc=fn=>{try{fn()}catch(e){out('⚠️ '+esc(e.message||'Masukan tidak valid'))}};
+const hMr=()=>tryc(()=>{const f=$('#a').value,r=mr(f);out(`Mr ${sub(f)} = ${r.st}<br><b>= ${f2(r.v)}</b>`)});
+const hKonv=()=>tryc(()=>{const f=$('#a').value,m=mr(f).v,j=$('#j').value,x=+$('#b').value;let n,st;if(j==='g'){n=x/m;st=`n = massa / Mr = ${f2(x)} / ${f2(m)}`}else if(j==='n'){n=x;st='n diketahui'}else{n=x/L;st=`n = partikel / 6,02×10²³`}
+out(`Mr ${sub(f)} = ${f2(m)}<br>${st} → <b>n = ${f2(n)} mol</b><br>Massa = n × Mr = <b>${f2(n*m)} g</b><br>Partikel = n × 6,02×10²³ = <b>${sci(n*L)}</b><br>Volume gas (STP) = n × 22,4 = <b>${f2(n*22.4)} L</b>`)});
+const hSet=()=>tryc(()=>{const [l,r]=$('#a').value.split(/->|→|=/).map(s=>s.split('+').map(x=>x.trim().replace(/^\d+/,'')).filter(Boolean));if(!r)throw Error('Gunakan tanda -> antara reaktan dan produk');const sp=[...l,...r],P=sp.map(parse),el=[...new Set(P.flatMap(Object.keys))];
+if(sp.length>6)throw Error('Maksimal 6 zat');let best=null;const c=Array(sp.length).fill(1);
+(function rec(i){if(best)return;if(i===sp.length){if(el.every(e=>P.reduce((s,p,j)=>s+(p[e]||0)*c[j]*(j<l.length?1:-1),0)===0)){best=c.slice()}return}for(let v=1;v<=10&&!best;v++){c[i]=v;rec(i+1)}})(0);
+if(!best)throw Error('Tidak ditemukan koefisien (≤10). Periksa rumus.');
+const t=(a,b)=>a.map((f,j)=>(best[b+j]>1?best[b+j]:'')+sub(f)).join(' + ');
+out(`<b>${t(l,0)} → ${t(r,l.length)}</b><br>Cek jumlah atom: ${el.map(e=>e+' = '+P.reduce((s,p,j)=>s+(j<l.length?(p[e]||0)*best[j]:0),0)).join(', ')} (kiri = kanan)`)});
+const hBat=()=>tryc(()=>{const a=[1,2].map(i=>{const f=$('#a'+i).value,M=mr(f).v,m=+$('#m'+i).value,k=+$('#k'+i).value;return{f,M,n:m/M,k,r:m/M/k}});
+const lim=a[0].r<=a[1].r?0:1,o=1-lim;const sisa=a[o].n-a[lim].r*a[o].k;
+out(a.map(x=>`n ${sub(x.f)} = ${f2(x.n)} mol; n/koefisien = <b>${f2(x.r)}</b>`).join('<br>')+`<br>Pereaksi pembatas: <b>${sub(a[lim].f)}</b> (hasil bagi terkecil).<br>Pereaksi berlebih: ${sub(a[o].f)}, sisa ${f2(Math.max(sisa,0))} mol = ${f2(Math.max(sisa,0)*a[o].M)} g.`)});
+
+const hKek=()=>tryc(()=>{const m=+$('#m1').value;if(!(m>0))throw Error('Masukkan massa Mg > 0');const n=m/24,o=n/2*32,p=n*40;out(`n Mg = ${f2(m)} / 24 = ${f2(n)} mol<br>Dari koefisien 2Mg : O<sub>2</sub> = 2 : 1 → n O<sub>2</sub> = ${f2(n/2)} mol = <b>${f2(o)} g</b><br>n MgO = ${f2(n)} mol × 40 = <b>${f2(p)} g</b><br>Massa sebelum = ${f2(m)} + ${f2(o)} = <b>${f2(m+o)} g</b>; sesudah = <b>${f2(p)} g</b> ${Math.abs(m+o-p)<1e-6?'✅ sama (Hukum Lavoisier)':''}`)});
+const hGay=()=>tryc(()=>{const r=RX[+$('#rx').value],v=+$('#v').value;if(!(v>0))throw Error('Masukkan volume > 0');out(r.g.map((g,i)=>`${g}: koefisien ${r.k[i]} → <b>${f2(v*r.k[i]/r.k[0])} L</b>`).join('<br>')+`<br>Perbandingan volume = ${r.k.join(' : ')} (sama dengan koefisien).`)});
+
+/* ---------- latihan / ulangan ---------- */
+let TM=null;
+function pQuiz(sec){clearInterval(TM);const ul=sec>0;$('#pg').innerHTML=`<div class="box" id="qz"><p>${ul?'Waktu pengerjaan 10 menit. Soal uraian dinilai manual oleh guru.':'Latihan tanpa batas waktu.'}</p><button id="mulai">Mulai</button></div>`;
+$('#mulai').onclick=()=>{if(!need())return;let left=sec;const draw=()=>{};$('#qz').innerHTML=`${ul?'<div class="bar"><b>Sisa waktu: <span id="tm"></span></b></div>':''}`+SOAL.map((s,i)=>`<div class="box"><b>${i+1}.</b> ${s.q}<br>${s.t==='pg'?s.o.map((o,j)=>`<label style="display:block"><input type="radio" name="q${i}" value="${j}" style="width:auto"> ${o}</label>`).join(''):s.t==='bs'?['true','false'].map(v=>`<label style="display:block"><input type="radio" name="q${i}" value="${v}" style="width:auto"> ${v==='true'?'Benar':'Salah'}</label>`).join(''):s.t==='is'?`<input id="q${i}" type="text" inputmode="decimal">`:`<textarea id="q${i}" rows="4"></textarea>`}</div>`).join('')+'<button id="kirim">Kumpulkan</button>';
+const fin=async()=>{clearInterval(TM);let ben=0,tot=0,h='';SOAL.forEach((s,i)=>{let ans,ok=null;if(s.t==='is'){ans=$('#q'+i).value.trim();ok=parseFloat(ans.replace(',','.'))===s.a}else if(s.t==='ur'){ans=$('#q'+i).value}else{const c=document.querySelector(`input[name=q${i}]:checked`);ans=c?c.value:'';ok=s.t==='pg'?ans!==''&&+ans===s.a:ans===String(s.a)}
+if(ok!==null){tot++;if(ok)ben++}h+=`<div class="box"><b>${i+1}.</b> ${ok===null?'<span class="mut">menunggu penilaian guru</span>':ok?'<span class="ok">Benar</span>':'<span class="no">Salah</span>'}<br><span class="mut">Pembahasan:</span> ${s.p}</div>`});
+const nilai=Math.round(ben/tot*100);await S.add('nilai',{sid:ME.id,nama:ME.name,kelas:ME.kelas,jenis:ul?'Ulangan Harian':'Latihan Soal',nilai});$('#qz').innerHTML=`<div class="box"><h3>Nilai objektif: ${nilai}</h3><p>${ben} dari ${tot} soal objektif benar.</p></div>`+h};
+$('#kirim').onclick=fin;if(ul){const tick=()=>{const m=Math.floor(left/60),s=left%60;$('#tm')&&($('#tm').textContent=m+':'+String(s).padStart(2,'0'));if(left--<=0)fin()};tick();TM=setInterval(tick,1000)}}}
+
+/* ---------- absensi, tugas, hasil ---------- */
+async function pAbsen(){const a=await S.list('absen');const rows=(guru()?a:a.filter(x=>x.sid===ME.id)).sort((x,y)=>y.ts-x.ts);
+$('#pg').innerHTML=(guru()?'':`<div class="box"><label>Status kehadiran hari ini</label><select id="st"><option>Hadir</option><option>Izin</option><option>Sakit</option><option>Alpa</option></select><button onclick="saveAbs()">Kirim</button></div>`)+`<div class="box tbl"><table><tr><th>Waktu</th><th>Nama</th><th>Kelas</th><th>Status</th></tr>${rows.map(x=>`<tr><td>${new Date(x.ts).toLocaleString('id-ID')}</td><td>${esc(x.nama)}</td><td>${esc(x.kelas)}</td><td>${esc(x.status)}</td></tr>`).join('')||'<tr><td colspan=4 class="mut">Belum ada data.</td></tr>'}</table></div>`}
+async function saveAbs(){if(!need())return;await S.add('absen',{sid:ME.id,nama:ME.name,kelas:ME.kelas,status:$('#st').value});pAbsen()}
+async function pTugas(){const a=await S.list('tugas'),tg=(await S.list('res')).filter(x=>x.type==='tugas');const rows=(guru()?a:a.filter(x=>x.sid===ME.id)).sort((x,y)=>y.ts-x.ts);
+$('#pg').innerHTML=(guru()?`<div class="box"><b>Buat tugas</b><input id="rt" placeholder="Judul / perintah tugas"><input id="ru" placeholder="Tautan materi (https://…)"><button onclick="addRes('tugas').then(pTugas)">Simpan</button></div>`:'')+`<div class="box"><b>Soal penugasan</b>${TUGAS.map(x=>`<details><summary>${x[0]}</summary><p>${x[1]}</p></details>`).join('')}<hr><b>Tugas tambahan dari guru</b>${tg.map(x=>`<p>📌 <a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a></p>`).join('')||'<p class="mut">Belum ada tugas.</p>'}</div>`+(guru()?'':`<div class="box"><b>Kumpulkan tugas</b><input id="tj" placeholder="Judul tugas"><textarea id="ts" rows="4" placeholder="Jawaban"></textarea><input id="tl" placeholder="Tautan foto/dokumen hasil (Google Drive, dsb.)"><button onclick="saveTgs()">Kumpulkan</button></div>`)+`<div class="box"><b>Pengumpulan</b>${rows.map(x=>`<div class="box"><b>${esc(x.nama)}</b> (${esc(x.kelas)}) – ${esc(x.judul)}<br>${esc(x.jawab)}${x.link?`<br><a href="${esc(x.link)}" target="_blank" rel="noopener">Lampiran</a>`:''}<br>${x.nilai!=null?`Nilai: <b>${esc(x.nilai)}</b> · ${esc(x.fb||'')}`:'<span class="mut">Belum dinilai</span>'}${guru()?`<div class="row"><input id="n${x.id}" type="number" placeholder="Nilai"><input id="f${x.id}" placeholder="Umpan balik"></div><button onclick="nilaiT('${x.id}')">Simpan nilai</button>`:''}</div>`).join('')||'<p class="mut">Belum ada pengumpulan.</p>'}</div>`}
+async function saveTgs(){if(!need())return;if(!$('#tj').value.trim())return alert('Isi judul tugas.');await S.add('tugas',{sid:ME.id,nama:ME.name,kelas:ME.kelas,judul:$('#tj').value,jawab:$('#ts').value,link:/^https?:\/\//.test($('#tl').value)?$('#tl').value:''});pTugas()}
+async function nilaiT(id){const x=(await S.list('tugas')).find(t=>t.id===id);x.nilai=$('#n'+id).value;x.fb=$('#f'+id).value;await S.put('tugas',x);pTugas()}
+async function pHasil(){const a=await S.list('nilai'),t=await S.list('tugas');const rows=(guru()?a:a.filter(x=>x.sid===ME.id)).sort((x,y)=>y.ts-x.ts);
+$('#pg').innerHTML=`<div class="box tbl"><table><tr><th>Tanggal</th><th>Nama</th><th>Jenis</th><th>Nilai</th></tr>${rows.map(x=>`<tr><td>${new Date(x.ts).toLocaleDateString('id-ID')}</td><td>${esc(x.nama)}</td><td>${esc(x.jenis)}</td><td>${x.nilai}</td></tr>`).join('')||'<tr><td colspan=4 class="mut">Belum ada hasil.</td></tr>'}</table></div>`+(guru()?'<button id="dl">Unduh rekap (CSV)</button>':'');
+if(guru())$('#dl').onclick=async()=>{const d=await claude.use('downloads');const csv='Nama,Kelas,Jenis,Nilai\n'+a.map(x=>[x.nama,x.kelas,x.jenis,x.nilai].map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');if(!d)return alert('Unduhan tidak tersedia.');try{await d.save({filename:'rekap-nilai-kimia.csv',data:csv})}catch(e){}}}
+</script></body></html>
